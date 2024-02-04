@@ -29,8 +29,9 @@ public class TokenController {
     @PostMapping("/login")
     public ResultUtil login(@RequestBody Tokens tokens ){
         List<Tokens> all = tokensService.findAll();
-        Optional<Tokens> first = all.stream().filter(t -> Objects.equals(t.getPassword(), tokens.getPassword()) &&
-                Objects.equals(t.getUsername(), tokens.getUsername())).findFirst();
+        Optional<Tokens> first = all.stream().filter(t -> Objects.equals(t.getPassword(), tokens.getPassword())
+                && Objects.equals(t.getUsername(), tokens.getUsername())
+                && Objects.equals(t.getRole(),tokens.getRole())).findFirst();
         return first.map(ResultUtil::ok).orElseGet(() -> ResultUtil.error("登陆失败，请检查用户名密码"));
     }
 
