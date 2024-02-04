@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 //判断注册的用户身份是管理员还是商家
 public class Tokens {
-    @TableId(type = IdType.AUTO)
-    private Integer id;
+    //@TableId(type = IdType.AUTO)
+    private String id;
     private String username;
     private String password;
     private String userid;
@@ -15,11 +15,12 @@ public class Tokens {
     private String role;
     private String login;
 
-    public Integer getId() {
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

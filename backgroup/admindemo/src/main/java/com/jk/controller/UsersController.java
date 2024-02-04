@@ -6,11 +6,14 @@ import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jk.entity.Goods;
+import com.jk.entity.Tokens;
 import com.jk.entity.Users;
 import com.jk.service.IGoodsService;
+import com.jk.service.ITokensService;
 import com.jk.service.IUsersService;
 import com.jk.utils.ResultUtil;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,12 +23,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
 public class UsersController {
     @Autowired
     private IUsersService usersService;
+    @Autowired
+    private ITokensService tokensService;
     // 1、查询后台所有商品
     @GetMapping("/list")
     public List<Users> findAll(){
@@ -55,7 +61,8 @@ public class UsersController {
     @PostMapping("/save")
     public ResultUtil save(@RequestBody Users users){
         System.out.println(users);
-        if (users.getId()==0){//新增
+        if (StringUtils.isBlank(users.getId()) || users.getId().equals("0")){//新增
+            users.setId(UUID.randomUUID().toString());
             usersService.save(users);
             return ResultUtil.ok("保存成功！");
         }else {//编辑
@@ -119,5 +126,17 @@ public class UsersController {
     }
 
 
+
+    @PostMapping("/register")
+    public ResultUtil register(@RequestBody Users users){
+        users.setId(UUID.randomUUID().toString());
+        usersService.save(users);
+        Tokens token = new Tokens();
+        BeanUtils.copyProperties(users,token);
+        token.setRole("用户");
+        token.setLogin("用户");
+        tokensService.save(token);
+        return new ResultUtil(0,"注册成功");
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.jk.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jk.entity.Users;
 import com.jk.mapper.IUsersMapper;
@@ -15,6 +16,9 @@ public class UsersServiceImpl extends ServiceImpl<IUsersMapper,Users> implements
     public List<Users> findAll(){
         return list();
     }
+
+
+
 //@Service
 //public class TokensServiceImpl extends ServiceImpl<ITokensMapper, Tokens> implements ITokensService {
 //    @Override
