@@ -10,6 +10,15 @@
                     <el-form-item label="密码" prop="password">
                         <el-input type="password" v-model.trim="loginForm.password" autocomplete="off" :maxlength="20"></el-input>
                     </el-form-item>
+                    <el-form-item label="角色" prop="role">
+                        <el-select
+                            v-model="loginForm.role"
+                            default-first-option
+                            placeholder="请选择角色">
+                            <el-option label="管理员" value="管理员"></el-option>
+                            <el-option label="用户" value="用户"></el-option>
+                        </el-select>
+                    </el-form-item>
                     <el-form-item>
                         <el-button class="btn" size="medium" type="primary" @click="submitForm">登录</el-button>
                     </el-form-item>
@@ -80,7 +89,8 @@ export default {
             type: 0, // 0登录 1 注册
             loginForm: {
                 username: '',
-                password: ''
+                password: '',
+                role: ''
             },
             registerForm: {
                 username: '',
@@ -97,6 +107,9 @@ export default {
                 ],
                 password: [
                     { required: true, message: '请输入密码', trigger: 'blur' },
+                ],
+                role: [
+                    { required: true, message: '请选择角色', trigger: 'blur' },
                 ]
             },
             registerRules: {
@@ -139,7 +152,6 @@ export default {
         // 登录
         submitForm() {
             this.$refs.loginForm.validate((valid) => {
-                console.log()
                 const url = 'http://' + window.location.hostname + ':8888/';
                 if (valid) {
                     axios.post(url + "tokens/login", this.loginForm)
@@ -167,7 +179,8 @@ export default {
         submitRegisterForm() {
             this.$refs.registerForm.validate((valid) => {
                 if (valid) {
-                    axios.post(url + ':8888/' + "users/register", this.registerForm)
+                    const url = 'http://' + window.location.hostname + ':8888/';
+                    axios.post(url + "users/register", this.registerForm)
 					.then(res => {
                         if (res.data.code == 0) {
                             const { data } = res.data;
