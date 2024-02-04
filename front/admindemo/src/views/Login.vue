@@ -76,7 +76,7 @@ export default {
             }
         };
         return {
-            url: 'http://localhost:8888/',
+            // url: 'http://localhost:8888/',
             type: 0, // 0登录 1 注册
             loginForm: {
                 username: '',
@@ -139,9 +139,10 @@ export default {
         // 登录
         submitForm() {
             this.$refs.loginForm.validate((valid) => {
-                console.log(valid)
+                console.log()
+                const url = 'http://' + window.location.hostname + ':8888/';
                 if (valid) {
-                    axios.post(this.url + "tokens/login", this.loginForm)
+                    axios.post(url + "tokens/login", this.loginForm)
 					.then(res => {
                         if (res.data.code == 0) {
                             const { data } = res.data;
@@ -166,7 +167,7 @@ export default {
         submitRegisterForm() {
             this.$refs.registerForm.validate((valid) => {
                 if (valid) {
-                    axios.post(this.url + "users/register", this.registerForm)
+                    axios.post(url + ':8888/' + "users/register", this.registerForm)
 					.then(res => {
                         if (res.data.code == 0) {
                             const { data } = res.data;
